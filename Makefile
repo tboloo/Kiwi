@@ -33,6 +33,14 @@ test:
 		PYTHONWARNINGS=d coverage run --source='.' ./manage.py test --noinput --settings=$(DJANGO_SETTINGS_MODULE); \
 	fi
 
+
+.PHONY: l10n-test
+l10n-test:
+	cdsitepackages && curl https://patch-diff.githubusercontent.com/raw/django/django/pull/10988.diff | patch -p1 && cd ~/Kiwi
+	./manage.py compilemessages
+	@make test
+
+
 # test for missing migrations
 # https://stackoverflow.com/questions/54177838/
 .PHONY: test_for_missing_migrations
